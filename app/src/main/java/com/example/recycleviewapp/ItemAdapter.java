@@ -1,16 +1,19 @@
 package com.example.recycleviewapp;
 
 import android.content.Context;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -24,7 +27,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         public ViewHolder(View itemView){
             super(itemView);
-
             vocabWord = (TextView) itemView.findViewById(R.id.vocab_word);
             remCorrect = (Button) itemView.findViewById(R.id.def_button);
         }
@@ -37,17 +39,34 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public ItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Context context = parent.getContext();
+        ViewConfiguration vc = ViewConfiguration.get(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View vocabView = inflater.inflate(R.layout.row_layout, parent, false);
         ViewHolder viewHolder = new ViewHolder(vocabView);
         return viewHolder;
     }
 
+    RecyclerView.OnItemTouchListener myItemTouchListener = new RecyclerView.OnItemTouchListener() {
+        @Override
+        public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    };
+
     @Override
     public void onBindViewHolder(ItemAdapter.ViewHolder holder, int position) {
         // Get the data model based on position
         Vocab word = dictionary.get(position);
-
         // Set item views based on your views and data model
         TextView textView = holder.vocabWord;
         textView.setText(word.getWord());
